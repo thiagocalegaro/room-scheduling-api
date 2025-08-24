@@ -1,0 +1,31 @@
+import { Injectable, ConflictException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Sala } from './entities/sala.entity';
+import { CreateSalaDto } from './dto/create-sala.dto';
+
+@Injectable()
+export class SalasService {
+  constructor(
+    @InjectRepository(Sala)
+    private readonly salasRepository: Repository<Sala>,
+  ) {}
+
+  async create(createSalaDto: CreateSalaDto): Promise<Sala> {
+    const { codigo } = createSalaDto;
+
+    const existingSala = await this.salasRepository.findOneBy({ codigo });
+
+    if (existingSala) {
+      throw new ConflictException(`A sala com o código '${codigo}' já existe.`);
+    }
+
+    const newSala = this.salasRepository.create(createSalaDto);
+    return this.salasRepository.save(newSala);
+  }
+  
+  findAllAtiva(): Promise<Sala[]> {
+    return this.salasRepository.findBy({ isAtiva: true });
+  }
+
+}
