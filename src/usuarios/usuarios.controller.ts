@@ -16,9 +16,4 @@ export class UsuariosController {
   findOne(@Param('id') id: string) {
     return this.usuariosService.findOne(+id);
   }
-
-  @Post('login')
-  login(@Body() LoginUsuarioDto: LoginUsuarioDto) {
-    return this.usuariosService.login(LoginUsuarioDto.email, LoginUsuarioDto.senha);
-  }
 }

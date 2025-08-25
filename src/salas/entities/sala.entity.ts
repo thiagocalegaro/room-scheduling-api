@@ -1,11 +1,13 @@
-// src/rooms/entities/room.entity.ts
+
 import {
   Entity,
   PrimaryColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { Excecao } from '../../excecoes/entities/excecoes.entity';
 
 @Entity('salas')
 export class Sala {
@@ -26,6 +28,21 @@ export class Sala {
 
   @Column({ type: 'text', nullable: true })
   foto_url: string;
+
+  @Column({ type: 'time', nullable: true, default: '08:00:00' })
+  hora_inicio: string;
+
+  @Column({ type: 'time', nullable: true, default: '18:00:00' })
+  hora_fim: string;
+
+  @Column({ type: 'boolean', nullable: true ,default: false })
+  disponivel_sabado: boolean;
+
+  @Column({ type: 'boolean', nullable: true ,default: false })
+  disponivel_domingo: boolean;
+
+  @OneToMany(() => Excecao, (excecao) => excecao.sala)
+  excecoes: Excecao[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

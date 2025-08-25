@@ -22,4 +22,20 @@ export class CreateSalaDto {
     @IsString()
     @IsOptional()
     foto_url?: string;
+
+    @IsString()
+    @IsOptional()
+    hora_inicio: string;
+
+    @IsString()
+    @IsOptional()
+    hora_fim: string;
+
+    @IsBoolean()
+    @IsOptional()
+    disponivel_sabado?: boolean;
+    
+    @IsBoolean()
+    @IsOptional()
+    disponivel_domingo?: boolean;
 }

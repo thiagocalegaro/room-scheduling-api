@@ -44,6 +44,4 @@ export class UsuariosService {
     usuario.senha = "senha removida por segurança";
     return usuario;
   }
-
-
 }
