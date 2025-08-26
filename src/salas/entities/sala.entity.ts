@@ -8,6 +8,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Excecao } from '../../excecoes/entities/excecoes.entity';
+import { Agendamento } from 'src/agendamentos/entities/agendamento.entity';
 
 @Entity('salas')
 export class Sala {
@@ -43,6 +44,9 @@ export class Sala {
 
   @OneToMany(() => Excecao, (excecao) => excecao.sala)
   excecoes: Excecao[];
+
+  @OneToMany(() => Agendamento, (agendamento) => agendamento.sala)
+  agendamentos: Agendamento[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

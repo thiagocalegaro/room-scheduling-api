@@ -4,8 +4,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { Role } from '../enums/role.enum'; 
+import { Agendamento } from 'src/agendamentos/entities/agendamento.entity';
 
 @Entity('usuarios')
 export class Usuario { 
@@ -23,6 +25,9 @@ export class Usuario {
 
   @Column({ type: 'enum', enum: Role, default: Role.User, nullable: false })
   tipo: Role;
+
+  @OneToMany(() => Agendamento, (agendamento) => agendamento.usuario)
+  agendamentos: Agendamento[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

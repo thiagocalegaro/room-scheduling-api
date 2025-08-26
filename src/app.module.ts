@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { RecursosModule } from './recursos/recursos.module';
 import { ExcecoesModule } from './excecoes/excecoes.module';
+import { AgendamentosModule } from './agendamentos/agendamentos.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { ExcecoesModule } from './excecoes/excecoes.module';
     AuthModule,
     RecursosModule,
     ExcecoesModule,
+    AgendamentosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

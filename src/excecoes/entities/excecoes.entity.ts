@@ -16,7 +16,7 @@ export class Excecao {
     id: number;
 
     @ManyToOne(() => Sala, (sala) => sala.excecoes)
-    @JoinColumn({ name: 'codigo_sala' }) // Chave estrangeira
+    @JoinColumn({ name: 'codigo_sala' })
     sala: Sala;
 
     @Column({ type: 'timestamp', nullable: false })

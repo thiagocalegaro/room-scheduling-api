@@ -20,5 +20,5 @@ export class CreateExcecaoDto {
 
   @IsString()
   @IsNotEmpty()
-  codigo_sala: string; // O usuário precisa informar para qual sala é a exceção
+  codigo_sala: string;
 }
