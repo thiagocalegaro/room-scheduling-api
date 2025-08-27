@@ -4,11 +4,11 @@ import { TipoExcecao } from '../enums/tipo-excecao.enum';
 export class CreateExcecaoDto {
   @IsDateString({}, { message: 'data_hora_inicio deve ser uma data ISO 8601 válida' })
   @IsNotEmpty()
-  data_hora_inicio: Date;
+  inicio: string;
 
   @IsDateString({}, { message: 'data_hora_fim deve ser uma data ISO 8601 válida' })
   @IsNotEmpty()
-  data_hora_fim: Date;
+  fim: string;
 
   @IsString()
   @IsNotEmpty()

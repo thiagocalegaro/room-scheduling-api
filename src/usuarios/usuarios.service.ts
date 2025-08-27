@@ -3,7 +3,11 @@ import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Usuario } from './entities/usuario.entity';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { 
+  Injectable, 
+  UnauthorizedException, 
+  ConflictException // 1. Importe a ConflictException
+} from '@nestjs/common';
 
 
 @Injectable()
@@ -12,17 +16,24 @@ export class UsuariosService {
     @InjectRepository(Usuario)
     private readonly usuariosRepository: Repository<Usuario>,
   ) {}
+
   async create(createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(createUsuarioDto.senha, saltRounds);
+    const { email, senha } = createUsuarioDto;
+    const usuarioExistente = await this.usuariosRepository.findOneBy({ email });
 
-  const newUser = this.usuariosRepository.create({
-    ...createUsuarioDto,
-    senha: hashedPassword,
-  });
+    if (usuarioExistente) {
+      throw new ConflictException(`O email '${email}' já está em uso.`);
+    }
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(createUsuarioDto.senha, saltRounds);
 
-  return this.usuariosRepository.save(newUser);
-}
+    const newUser = this.usuariosRepository.create({
+      ...createUsuarioDto,
+      senha: hashedPassword,
+    });
+
+    return this.usuariosRepository.save(newUser);
+  }
 
   findOne(id: number) {
     return this.usuariosRepository.findOneBy({ id });
