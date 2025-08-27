@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { SalasService } from './salas.service';
 import { CreateSalaDto } from './dto/create-sala.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guards';
-import { RolesGuard } from 'src/auth/guards/roles.guards';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { Role } from 'src/usuarios/enums/role.enum';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guards';
+import { RolesGuard } from '../auth/guards/roles.guards';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../usuarios/enums/role.enum';
 
 @Controller('salas')
 export class SalasController {

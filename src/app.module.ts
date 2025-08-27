@@ -25,7 +25,6 @@ import { AgendamentosModule } from './agendamentos/agendamentos.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, 
     }),
-
     SalasModule,
     UsuariosModule,
     AuthModule,

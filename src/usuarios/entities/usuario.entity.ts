@@ -7,7 +7,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Role } from '../enums/role.enum'; 
-import { Agendamento } from 'src/agendamentos/entities/agendamento.entity';
+import { Agendamento } from '../../agendamentos/entities/agendamento.entity';
 
 @Entity('usuarios')
 export class Usuario { 

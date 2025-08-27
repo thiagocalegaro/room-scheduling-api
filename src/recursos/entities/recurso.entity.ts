@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { SalaRecurso } from "src/salas/entities/sala_recurso.entity";
+import { SalaRecurso } from "../../salas/entities/sala_recurso.entity";
 
 @Entity('recursos')
 export class Recurso {

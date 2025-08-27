@@ -8,7 +8,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Excecao } from '../../excecoes/entities/excecoes.entity';
-import { Agendamento } from 'src/agendamentos/entities/agendamento.entity';
+import { Agendamento } from '../../agendamentos/entities/agendamento.entity';
 import { SalaRecurso } from './sala_recurso.entity';
 
 @Entity('salas')

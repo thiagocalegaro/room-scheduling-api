@@ -1,8 +1,8 @@
 // src/recursos/entities/sala-recurso.entity.ts
 
-import { Sala } from 'src/salas/entities/sala.entity';
+import { Sala } from '../../salas/entities/sala.entity';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Recurso } from 'src/recursos/entities/recurso.entity';
+import { Recurso } from '../../recursos/entities/recurso.entity';
 
 @Entity('sala_recursos')
 export class SalaRecurso {

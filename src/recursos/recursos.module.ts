@@ -3,7 +3,7 @@ import { RecursosService } from './recursos.service';
 import { RecursosController } from './recursos.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Recurso } from './entities/recurso.entity';
-import { SalaRecurso } from 'src/salas/entities/sala_recurso.entity';
+import { SalaRecurso } from '../salas/entities/sala_recurso.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Recurso, SalaRecurso])],

@@ -2,10 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { ExcecoesService } from './excecoes.service';
 import { CreateExcecaoDto } from './dto/create-excecao.dto';
 import { UpdateExcecaoDto } from './dto/update-excecao.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guards';
-import { RolesGuard } from 'src/auth/guards/roles.guards';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { Role } from 'src/usuarios/enums/role.enum';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guards';
+import { RolesGuard } from '../auth/guards/roles.guards';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../usuarios/enums/role.enum';
 
 @Controller('excecoes')
 export class ExcecoesController {

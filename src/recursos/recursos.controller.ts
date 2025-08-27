@@ -2,10 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { RecursosService } from './recursos.service';
 import { CreateRecursoDto } from './dto/create-recurso.dto';
 import { UpdateRecursoDto } from './dto/update-recurso.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guards';
-import { Role } from 'src/usuarios/enums/role.enum';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { RolesGuard } from 'src/auth/guards/roles.guards';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guards';
+import { Role } from '../usuarios/enums/role.enum';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guards';
 
 @Controller('recursos')
 export class RecursosController {

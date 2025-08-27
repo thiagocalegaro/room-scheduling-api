@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAgendamentoDto } from './dto/create-agendamento.dto';
-import { UpdateAgendamentoDto } from './dto/update-agendamento.dto';
 
 @Injectable()
 export class AgendamentosService {
