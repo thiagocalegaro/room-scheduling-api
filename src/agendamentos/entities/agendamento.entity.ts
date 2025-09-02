@@ -22,7 +22,7 @@ export class Agendamento {
     usuario: Usuario;
 
     @Column({ type: 'date', nullable: false })
-    data: string;
+    data: Date;
 
     @Column({ type: 'time', nullable: false })
     hora_inicio: string;

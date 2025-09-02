@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { AgendamentosService } from './agendamentos.service';
 import { CreateAgendamentoDto } from './dto/create-agendamento.dto';
+import { CreateAgendamentoRecorrenteDto } from './dto/create-agendamento-recorrente.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guards';
 import { RolesGuard } from '../auth/guards/roles.guards';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -32,5 +33,10 @@ export class AgendamentosController {
   @Roles(Role.Admin)
   remove(@Param('id') id: string) {
     return this.agendamentosService.remove(+id);
+  }
+
+  @Post('recorrente')
+  createRecorrente(@Body() createAgendamentoRecorrenteDto: CreateAgendamentoRecorrenteDto) {
+    return this.agendamentosService.createRecorrente(createAgendamentoRecorrenteDto);
   }
 }

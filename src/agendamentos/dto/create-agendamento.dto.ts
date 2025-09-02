@@ -3,15 +3,15 @@ import { IsDate, IsDateString, IsInt, IsNotEmpty, IsString, Matches } from "clas
 export class CreateAgendamentoDto {
     @IsString()
     @IsNotEmpty()
-    codigo_sala: number;
+    codigo_sala: string;
 
     @IsInt()
     @IsNotEmpty()
     id_usuario: number;
 
-    @IsDateString()
+    @IsDate()
     @IsNotEmpty()
-    data: string;
+    data: Date;
     
     @Matches(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, { 
     message: 'A hora de início deve estar no formato HH:mm.',

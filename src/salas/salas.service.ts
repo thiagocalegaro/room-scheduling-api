@@ -28,4 +28,12 @@ export class SalasService {
     return this.salasRepository.findBy({ isAtiva: true });
   }
 
+  async findOne(codigo_sala: string): Promise<Sala> {
+    const sala = await this.salasRepository.findOneBy({ codigo: codigo_sala });
+    if (!sala) {
+      throw new ConflictException(`Sala com o código '${codigo_sala}' não encontrada.`);
+    }
+    return sala;
+  }
+
 }
