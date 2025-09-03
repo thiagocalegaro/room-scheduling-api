@@ -20,13 +20,10 @@ export class Excecao {
     sala: Sala;
 
     @Column({ type: 'timestamp', nullable: false })
-    inicio: string;
+    inicio: Date;
 
     @Column({ type: 'timestamp', nullable: false })
-    fim: string;
-
-    @Column({ type: 'varchar', length: 50, nullable: false })
-    sala_codigo: string;
+    fim: Date;
 
     @Column({ type: 'enum', enum: TipoExcecao, nullable: false })
     tipo: TipoExcecao;

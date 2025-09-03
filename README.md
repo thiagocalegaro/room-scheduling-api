@@ -25,8 +25,8 @@ Siga os passos para executar o projeto em seu ambiente de desenvolvimento.
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://github.com/thiagocalegaro/room-scheduling-api.git](https://github.com/thiagocalegaro/room-scheduling-api.git)
-    cd room-scheduling-api
+    git clone [https://github.com/thiagocalegaro/room-booking-api.git](https://github.com/thiagocalegaro/room-booking-api.git)
+    cd room-booking-api
     ```
 
 2.  **Instale as dependências:**

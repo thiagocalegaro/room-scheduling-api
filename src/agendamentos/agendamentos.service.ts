@@ -45,8 +45,8 @@ export class AgendamentosService {
 
     const novoAgendamento = this.agendamentosRepository.create({
       data: dataAgendamento,
-      sala, // Atribui o objeto Sala completo
-      usuario, // Atribui o objeto Usuario completo
+      sala,
+      usuario,
       hora_inicio: dto.hora_inicio,
       hora_fim: dto.hora_fim,
     });
@@ -54,7 +54,6 @@ export class AgendamentosService {
     return this.agendamentosRepository.save(novoAgendamento);
   }
 
-  // LÓGICA DE VERIFICAÇÃO DE CONFLITO CORRIGIDA
   async verificarDisponibilidade(
     codigo_sala: string,
     data: Date,
@@ -65,9 +64,6 @@ export class AgendamentosService {
       where: {
         sala: { codigo: codigo_sala },
         data: data,
-        // Verifica se existe algum agendamento que começa ANTES do fim do novo agendamento
-        // E que termina DEPOIS do início do novo agendamento.
-        // Esta é a forma correta de checar sobreposição de horários.
         hora_inicio: LessThan(hora_fim),
         hora_fim: MoreThan(hora_inicio),
       },
@@ -81,7 +77,6 @@ export class AgendamentosService {
     await queryRunner.startTransaction();
 
     try {
-      // Busca as entidades relacionadas ANTES do loop
       const sala = await this.salasService.findOne(dto.codigo_sala);
       if (!sala) {
         throw new NotFoundException(`Sala com código ${dto.codigo_sala} não encontrada.`);

@@ -35,5 +35,11 @@ export class SalasService {
     }
     return sala;
   }
+  async findByBloco(bloco: string): Promise<Sala[]> {
+    return this.salasRepository.findBy({ bloco});
+  }
+  async findAll(): Promise<Sala[]> {
+    return this.salasRepository.find();
+  }
 
 }

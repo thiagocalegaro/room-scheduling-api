@@ -1,5 +1,4 @@
 import { IsInt, Min, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
 import { CreateAgendamentoDto } from './create-agendamento.dto';
 
 export class CreateAgendamentoRecorrenteDto extends CreateAgendamentoDto {
