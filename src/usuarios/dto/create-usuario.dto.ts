@@ -19,4 +19,8 @@ export class CreateUsuarioDto {
     @IsString()
     @IsNotEmpty()
     tipo: Role;
+
+    @IsNotEmpty()
+    @Match('senha', { message: 'As senhas não correspondem.' }) // Aplica o decorator
+    confirmar_senha: string;
 }
