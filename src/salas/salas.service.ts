@@ -41,5 +41,14 @@ export class SalasService {
   async findAll(): Promise<Sala[]> {
     return this.salasRepository.find();
   }
-
+  async update(codigo_sala: string, updateSalaDto: Partial<CreateSalaDto>): Promise<Sala> {
+    const sala = await this.findOne(codigo_sala);
+    Object.assign(sala, updateSalaDto);
+    return this.salasRepository.save(sala);
+  }
+  async remove(codigo_sala: string): Promise<Sala> {
+    const sala = await this.findOne(codigo_sala);
+    await this.salasRepository.remove(sala);
+    return sala;
+  }
 }

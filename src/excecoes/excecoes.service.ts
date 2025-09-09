@@ -14,22 +14,6 @@ import { ExcluirExcecaoGlobalDto } from './dto/delete-excecao-global.dto';
 @Injectable()
 export class ExcecoesService {
   
-  findAll() {
-    return `This action returns all exceptions`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} exception`;
-  }
-
-  update(id: number, updateExcecaoDto: UpdateExcecaoDto) {
-    return `This action updates a #${id} exception`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} exception`;
-  }
-
   constructor(
     private dataSource: DataSource,
     @InjectRepository(Excecao)
@@ -63,8 +47,8 @@ export class ExcecoesService {
     }
 
     const novaExcecao = this.excecoesRepository.create({
-      inicio: dto.inicio,
-      fim: dto.fim,
+      inicio: new Date(dto.inicio),
+      fim: new Date(dto.fim),
       motivo: dto.motivo,
       tipo: dto.tipo,
       sala: sala,
@@ -88,8 +72,8 @@ export class ExcecoesService {
     try {
         for (const sala of salasDoBloco) {
             const novaExcecao = this.excecoesRepository.create({
-                inicio: dto.inicio,
-                fim: dto.fim,
+                inicio: new Date(dto.inicio),
+                fim: new Date(dto.fim),
                 motivo: dto.motivo,
                 tipo: dto.tipo,
                 sala: sala, 
@@ -124,11 +108,11 @@ export class ExcecoesService {
     try {
         for (const sala of todasAsSalas) {
             const novaExcecao = this.excecoesRepository.create({
-                inicio: dto.inicio,
-                fim: dto.fim,
+                inicio: new Date(dto.inicio),
+                fim: new Date(dto.fim),
                 motivo: dto.motivo,
                 tipo: dto.tipo,
-                sala: sala, 
+                sala: sala,
             });
 
             const excecaoSalva = await queryRunner.manager.save(novaExcecao);
@@ -154,19 +138,20 @@ export class ExcecoesService {
   }
 
   async excluirEmLote(dto: ExcluirExcecaoGlobalDto): Promise<DeleteResult> {
-  const inicioDate = new Date(dto.inicio);
-  const fimDate = new Date(dto.fim);
-
+  
   const resultado = await this.excecoesRepository.delete({
+    inicio: new Date(dto.inicio),
+    fim: new Date(dto.fim),
     motivo: dto.motivo,
-    inicio: inicioDate,
-    fim: fimDate,
   });
 
   if (resultado.affected === 0) {
     throw new NotFoundException(`Nenhuma exceção correspondente encontrada para exclusão.`);
   }
-  
-  return resultado;
-}
+
+    return resultado;
+  }
+  async findAll(): Promise<Excecao[]> {
+    return this.excecoesRepository.find({ relations: ['sala'] });
+  }
 }

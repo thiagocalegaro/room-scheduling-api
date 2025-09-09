@@ -1,26 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRecursoDto } from './dto/create-recurso.dto';
-import { UpdateRecursoDto } from './dto/update-recurso.dto';
+import { Recurso } from './entities/recurso.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class RecursosService {
-  create(createRecursoDto: CreateRecursoDto) {
-    return 'This action adds a new recurso';
+
+  constructor(
+      @InjectRepository(Recurso)
+      private readonly salasRepository: Repository<Recurso>,
+    ) {}
+  async create(createRecursoDto: CreateRecursoDto): Promise<Recurso> {
+    const newRecurso = this.salasRepository.create(createRecursoDto);
+    return this.salasRepository.save(newRecurso);
   }
 
-  findAll() {
-    return `This action returns all recursos`;
+  async findAll(): Promise<Recurso[]> {
+    return this.salasRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} recurso`;
+  async findOne(id: number): Promise<Recurso> {
+    const recurso = await this.salasRepository.findOneBy({ id });
+    if (!recurso) {
+      throw new Error(`Recurso com ID ${id} não encontrado.`);
+    }
+    return recurso;
   }
 
-  update(id: number, updateRecursoDto: UpdateRecursoDto) {
-    return `This action updates a #${id} recurso`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} recurso`;
+  private async remove(id: number): Promise<Recurso> {
+    const recurso = await this.findOne(id);
+    await this.salasRepository.remove(recurso);
+    return recurso;
   }
 }
