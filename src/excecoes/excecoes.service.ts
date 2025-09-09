@@ -7,6 +7,9 @@ import { Excecao } from './entities/excecoes.entity';
 import { SalasService } from '../salas/salas.service';
 import { EscopoExcecao } from './dto/create-excecao.dto';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { InternalServerErrorException } from '@nestjs/common';
+import { DeleteResult } from 'typeorm';
+import { ExcluirExcecaoGlobalDto } from './dto/delete-excecao-global.dto';
 
 @Injectable()
 export class ExcecoesService {
@@ -60,8 +63,8 @@ export class ExcecoesService {
     }
 
     const novaExcecao = this.excecoesRepository.create({
-      inicio: new Date(dto.inicio),
-      fim: new Date(dto.fim),
+      inicio: dto.inicio,
+      fim: dto.fim,
       motivo: dto.motivo,
       tipo: dto.tipo,
       sala: sala,
@@ -77,20 +80,93 @@ export class ExcecoesService {
     if (salasDoBloco.length === 0) {
       throw new NotFoundException(`Nenhuma sala encontrada para o bloco ${dto.bloco}.`);
     }
-    
-    // A lógica de transação aqui é crucial para garantir que a exceção
-    // seja aplicada a TODAS as salas do bloco, ou a nenhuma.
-    // (O esqueleto da transação é o mesmo do createRecorrente)
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
     const excecoesCriadas: Excecao[] = [];
-    for (const sala of salasDoBloco) {
-      // cria e salva uma exceção para cada sala...
+
+    try {
+        for (const sala of salasDoBloco) {
+            const novaExcecao = this.excecoesRepository.create({
+                inicio: dto.inicio,
+                fim: dto.fim,
+                motivo: dto.motivo,
+                tipo: dto.tipo,
+                sala: sala, 
+            });
+
+            const excecaoSalva = await queryRunner.manager.save(novaExcecao);
+            excecoesCriadas.push(excecaoSalva);
+        }
+
+        await queryRunner.commitTransaction();
+        return excecoesCriadas;
+
+    } catch (error) {
+        await queryRunner.rollbackTransaction();
+        throw new InternalServerErrorException('Falha ao criar exceções para o bloco.', error);
+    } finally {
+        await queryRunner.release();
     }
-    return excecoesCriadas;
   }
   
   private async criarParaTodas(dto: CreateExcecaoDto): Promise<Excecao[]> {
     const todasAsSalas = await this.salasService.findAll();
+    if (todasAsSalas.length === 0) {
+      throw new NotFoundException('Nenhuma sala encontrada no sistema.');
+    }
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
     const excecoesCriadas: Excecao[] = [];
+
+    try {
+        for (const sala of todasAsSalas) {
+            const novaExcecao = this.excecoesRepository.create({
+                inicio: dto.inicio,
+                fim: dto.fim,
+                motivo: dto.motivo,
+                tipo: dto.tipo,
+                sala: sala, 
+            });
+
+            const excecaoSalva = await queryRunner.manager.save(novaExcecao);
+            excecoesCriadas.push(excecaoSalva);
+        }
+
+        await queryRunner.commitTransaction();
+    } catch (error) {
+        await queryRunner.rollbackTransaction();
+        throw new InternalServerErrorException('Falha ao criar exceções para o bloco.', error);
+    } finally {
+        await queryRunner.release();
+    }
+
     return excecoesCriadas;
   }
+
+  private async excluirExcecao(id: number): Promise<void> {
+    const resultado = await this.excecoesRepository.delete(id);
+    if (resultado.affected === 0) {
+      throw new NotFoundException(`Exceção com ID ${id} não encontrada.`);
+    }
+  }
+
+  async excluirEmLote(dto: ExcluirExcecaoGlobalDto): Promise<DeleteResult> {
+  const inicioDate = new Date(dto.inicio);
+  const fimDate = new Date(dto.fim);
+
+  const resultado = await this.excecoesRepository.delete({
+    motivo: dto.motivo,
+    inicio: inicioDate,
+    fim: fimDate,
+  });
+
+  if (resultado.affected === 0) {
+    throw new NotFoundException(`Nenhuma exceção correspondente encontrada para exclusão.`);
+  }
+  
+  return resultado;
+}
 }
